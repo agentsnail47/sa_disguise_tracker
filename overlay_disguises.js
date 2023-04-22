@@ -1,7 +1,8 @@
 let ws;
+let id;
 
 function send(data) {
-  ws.send(JSON.stringify({ type: 'disguises', data: data }));
+  ws.send(JSON.stringify({ type: 'disguises', id: id, data: data, id: id }));
 }
 
 function setDisguises(disguises) {
@@ -27,7 +28,9 @@ function clearDisguises() {
 }
 
 window.addEventListener('load', () => {
-  ws = new WebSocket(new URLSearchParams(location.search).get('s'));
+  const p = new URLSearchParams(location.search);
+  ws = new WebSocket(p.get('s'));
+  id = p.get('id');
   ws.addEventListener('open', (e) => {
     send({ 'cmd': 'hi' });
   });

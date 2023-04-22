@@ -1,8 +1,8 @@
 let ws;
-
+let id;
 
 function send(data) {
-  ws.send(JSON.stringify({ type: 'admin', data: data }));
+  ws.send(JSON.stringify({ type: 'admin', id: id, data: data }));
 }
 
 function populateMissions(files) {
@@ -26,7 +26,9 @@ function clearDisguises() {
 }
 
 window.addEventListener('load', () => {
-  ws = new WebSocket(new URLSearchParams(location.search).get('s'));
+  const p = new URLSearchParams(location.search);
+  ws = new WebSocket(p.get('s'));
+  id = p.get('id');
   ws.addEventListener('open', (e) => {
     send({ 'cmd': 'hi' });
   });
