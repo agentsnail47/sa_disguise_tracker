@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <link rel="stylesheet"
+          media="screen"
+          href="dock.css" />
+
+    <script src="dock.js"></script>
+  </head>
+
+  <body>
+
+    <div id="sa-tracker">
+      <div id="campaign">
+        <div id="m1" class="mission"></div>
+        <div id="m2" class="mission"></div>
+        <div id="m3" class="mission"></div>
+        <div id="m4" class="mission"></div>
+        <div id="m5" class="mission"></div>
+        <div id="m6" class="mission"></div>
+        <div id="m7" class="mission"></div>
+        <div id="m8" class="mission"></div>
+        <div id="m9" class="mission"></div>
+        <div id="m10" class="mission"></div>
+        <div id="m11" class="mission"></div>
+        <div id="m12" class="mission"></div>
+        <div id="m13" class="mission"></div>
+        <div id="m14" class="mission"></div>
+        <div id="m15" class="mission"></div>
+        <div id="m16" class="mission"></div>
+        <div id="m17" class="mission"></div>
+        <div id="m18" class="mission"></div>
+      </div>
+
+      <div>
+        <input type="button" value="Save" />
+        <input type="button" value="Load" />
+      </div>
+    </div>
+
+    <hr>
+
+    <div>
+      Missions: <select id="mission-disguise-files"></select>
+      <div>
+        <!-- <input type="button" id="disguise-revive" value="Revive Last" /> -->
+        <input type="button" id="disguise-roll" value="Roll" />
+        <input type="range" id="n-disguises" min="1" max="4" value="1" autocomplete="off"/>
+        <span id="n-disguises-val">1</span>
+        disguises
+        <input type="checkbox" id="always-suit" value="y" checked="yes" />
+        Include suit?
+        <input type="button" id="disguise-clear" value="Clear" />
+      </div>
+      <div id="disguises"></div>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,23 @@
+#disguises {
+  display: inline-block;
+}
+
+#disguises img {
+  display: inline-block;
+  max-width: 150px;
+  max-height: 150px;
+  cursor: pointer;
+  vertical-align: middle;
+  border: 5px solid red;
+  border-radius: 15px;
+  margin-right: 10px;
+}
+
+#disguises img.yes {
+  border-color: green !important;
+}
+
+#n-disguises-val {
+  font-size: 20px;
+  font-family: courier;
+}
