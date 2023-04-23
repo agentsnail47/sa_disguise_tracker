@@ -14,7 +14,7 @@ function populateMissions(files) {
 }
 
 function setDisguises(disguises) {
-  clearDisguises();
+  document.getElementById('disguises').innerHTML = '';
   const el = document.getElementById('disguises');
   disguises.forEach(e => {
     el.insertAdjacentHTML('beforeend', `<img title="${e.name}" src="${e.image}">`);
@@ -25,7 +25,7 @@ function setDisguises(disguises) {
 }
 
 function clearDisguises() {
-  document.getElementById('disguises').innerHTML = '';
+  setDisguises([]);
 }
 
 function connect() {
@@ -100,6 +100,8 @@ window.addEventListener('load', () => {
       yes: e.target.classList.contains('yes')
     });
   });
+
+  clearDisguises();
 
   setInterval(connect, 5000);
 });
