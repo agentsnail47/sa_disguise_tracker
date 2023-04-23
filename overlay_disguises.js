@@ -67,5 +67,6 @@ setInterval(connect, 5000);
 
 window.addEventListener('load', () => { 
   id = new URLSearchParams(location.search).get('id');
- connect();
+  connect();
+  setDisguises([]);
 });
