@@ -6,7 +6,7 @@ function send(data) {
 }
 
 function setDisguises(disguises) {
-  clearDisguises();
+  document.getElementById('disguises').innerHTML = '';
   const el = document.getElementById('disguises');
   disguises.forEach(e => {
     el.insertAdjacentHTML('beforeend', `<img src="${e.image}">`);
@@ -27,7 +27,7 @@ function setDisguiseState(disguise, yes) {
 }
 
 function clearDisguises() {
-  document.getElementById('disguises').innerHTML = '';
+  setDisguises([]);
 }
 
 function connect() {
@@ -68,5 +68,5 @@ setInterval(connect, 5000);
 window.addEventListener('load', () => { 
   id = new URLSearchParams(location.search).get('id');
   connect();
-  setDisguises([]);
+  clearDisguises();
 });
