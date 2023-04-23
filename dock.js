@@ -19,48 +19,70 @@ function setDisguises(disguises) {
   disguises.forEach(e => {
     el.insertAdjacentHTML('beforeend', `<img title="${e.name}" src="${e.image}">`);
   });
+  for (let i = 0; i < 4 - disguises.length; i++) {
+    el.insertAdjacentHTML('beforeend', `<div></div>`);
+  }
 }
 
 function clearDisguises() {
   document.getElementById('disguises').innerHTML = '';
 }
 
+function connect() {
+  if (!ws || ws.readyState === WebSocket.CLOSED) {
+    const p = new URLSearchParams(location.search);
+    ws = new WebSocket(p.get('s'));
+    ws.addEventListener('open', (e) => {
+      send({ 'cmd': 'hi' });
+    });
+    ws.onclose = function(e) {
+      console.log(`ws close:${e.reason}`);
+      ws = null;
+      setTimeout(function() {
+        connect();
+      }, 1000);
+    };
+    ws.onerror = function(err) {
+      console.error(`ws error:${err.message}`);
+      ws.close();
+    };
+    ws.addEventListener('message', e => {
+      const data = JSON.parse(e.data);
+      switch (data.cmd) {
+      case 'mission_disguise_files':
+        populateMissions(data.files);
+        break;
+      case 'disguises':
+        setDisguises(data.disguises);
+        break;
+      default:
+      };
+    });
+  }
+}
+
 window.addEventListener('load', () => {
   const p = new URLSearchParams(location.search);
-  ws = new WebSocket(p.get('s'));
   id = p.get('id');
-  ws.addEventListener('open', (e) => {
-    send({ 'cmd': 'hi' });
-  });
-  ws.addEventListener('message', e => {
-    const data = JSON.parse(e.data);
-    switch (data.cmd) {
-    case 'mission_disguise_files':
-      populateMissions(data.files);
-      break;
-    case 'disguises':
-      setDisguises(data.disguises);
-      break;
-    default:
-    };
-  });
+  connect();
 
-  document.getElementById('disguise-roll').addEventListener('click', e => {
-    send({
-      cmd: 'roll_disguises',
-      file: document.getElementById('mission-disguise-files').value,
-      n: parseInt(document.getElementById('n-disguises').value),
-      always_suit: document.getElementById('always-suit').checked
-    });
+  document.getElementById('disguise-rolls').addEventListener('click', e => {
+    const el = e.target;
+    console.log(el);
+    if (el.type === 'button') {
+      send({
+        cmd: 'roll_disguises',
+        file: document.getElementById('mission-disguise-files').value,
+        n: parseInt(el.dataset.n),
+        always_suit: document.getElementById('always-suit').checked
+      });
+    }
   });
 
   // document.getElementById('disguise-revive').addEventListener('click', e => {
   //   send({ cmd: 'revive_last_disguises' });
   // });
 
-  document.getElementById('n-disguises').addEventListener('input', e => {
-    document.getElementById('n-disguises-val').innerText = e.target.value;
-  });
   document.getElementById('disguise-clear').addEventListener('click', e => {
     send({ cmd: 'disguise_clear' });
     clearDisguises();
@@ -78,4 +100,6 @@ window.addEventListener('load', () => {
       yes: e.target.classList.contains('yes')
     });
   });
+
+  setInterval(connect, 5000);
 });

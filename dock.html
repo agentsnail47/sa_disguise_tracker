@@ -43,9 +43,12 @@
       Missions: <select id="mission-disguise-files"></select>
       <div>
         <!-- <input type="button" id="disguise-revive" value="Revive Last" /> -->
-        <input type="button" id="disguise-roll" value="Roll" />
-        <input type="range" id="n-disguises" min="1" max="4" value="1" autocomplete="off"/>
-        <span id="n-disguises-val">1</span>
+        <div id="disguise-rolls">
+          <input type="button" value="Roll 1" data-n="1" />
+          <input type="button" value="Roll 2" data-n="2" />
+          <input type="button" value="Roll 3" data-n="3" />
+          <input type="button" value="Roll 4" data-n="4" />
+        </div>
         disguises
         <input type="checkbox" id="always-suit" value="y" checked="yes" />
         Include suit?

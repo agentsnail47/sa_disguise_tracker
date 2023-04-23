@@ -71,22 +71,31 @@ body {
   display: inline-block;
 }
 
-#disguises img {
+#disguise-rolls {
   display: inline-block;
+}
+
+#disguises > * {
+  background: black;
+  display: inline-block;
+  min-width: 150px;
+  min-height: 112px;
   max-width: 150px;
   max-height: 150px;
-  cursor: pointer;
   vertical-align: middle;
-  border: 5px solid red;
   border-radius: 15px;
   margin-right: 10px;
+}
+
+#disguises img {
+  border: 5px solid red;
+  cursor: pointer;
 }
 
 #disguises img.yes {
   border-color: green !important;
 }
 
-#n-disguises-val {
-  font-size: 20px;
-  font-family: courier;
+#disguises div {
+  border: 5px solid #666;
 }
