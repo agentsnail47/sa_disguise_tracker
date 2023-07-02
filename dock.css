@@ -2,6 +2,11 @@ body {
   background: #dddddd;
 }
 
+#upper {
+  display: none;
+  visibility: hidden;
+}
+
 #campaign {
   display: inline-grid;
   grid-template-rows: 5px 15px 15px;
