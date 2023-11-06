@@ -1,18 +1,14 @@
-body {
-  background: #dddddd;
-}
-
-#upper {
-}
-
 #campaign {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   display: inline-grid;
   grid-template-rows: 5px 15px 15px;
   gap: 6px;
   grid-template-columns: repeat(18, 36px);
-  background: rgba(0, 0, 0, 0.5);
   padding: 2px;
-  margin-bottom: 5px;
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .mission {
@@ -71,12 +67,9 @@ body {
 }
 
 #disguises {
-  display: inline-block;
-  margin-top: 5px;
-}
-
-#disguise-rolls {
-  display: inline-block;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
 }
 
 #disguises > * {

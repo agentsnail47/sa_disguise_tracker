@@ -10,36 +10,48 @@
   <body>
 
     <div id="upper">
-    <div id="sa-tracker">
-      <div id="campaign">
-        <div id="m1" class="mission"></div>
-        <div id="m2" class="mission"></div>
-        <div id="m3" class="mission"></div>
-        <div id="m4" class="mission"></div>
-        <div id="m5" class="mission"></div>
-        <div id="m6" class="mission"></div>
-        <div id="m7" class="mission"></div>
-        <div id="m8" class="mission"></div>
-        <div id="m9" class="mission"></div>
-        <div id="m10" class="mission"></div>
-        <div id="m11" class="mission"></div>
-        <div id="m12" class="mission"></div>
-        <div id="m13" class="mission"></div>
-        <div id="m14" class="mission"></div>
-        <div id="m15" class="mission"></div>
-        <div id="m16" class="mission"></div>
-        <div id="m17" class="mission"></div>
-        <div id="m18" class="mission"></div>
-      </div>
-
-      <div>
-        <input type="button" value="Save" />
-        <input type="button" value="Load" />
+      <div id="sa-tracker">
+        <div id="campaign">
+          <div id="m1" class="mission"></div>
+          <div id="m2" class="mission"></div>
+          <div id="m3" class="mission"></div>
+          <div id="m4" class="mission"></div>
+          <div id="m5" class="mission"></div>
+          <div id="m6" class="mission"></div>
+          <div id="m7" class="mission"></div>
+          <div id="m8" class="mission"></div>
+          <div id="m9" class="mission"></div>
+          <div id="m10" class="mission"></div>
+          <div id="m11" class="mission"></div>
+          <div id="m12" class="mission"></div>
+          <div id="m13" class="mission"></div>
+          <div id="m14" class="mission"></div>
+          <div id="m15" class="mission"></div>
+          <div id="m16" class="mission"></div>
+          <div id="m17" class="mission"></div>
+          <div id="m18" class="mission"></div>
+        </div>
+        
+        <div id="campaign-actions">
+          <input type="button" value="Green" data-action="campaign.advance" data-state="green" />
+          <input type="button" value="Red" data-action="campaign.advance" data-state="red" />
+          <input type="button" value="Fail" data-action="campaign.advance" data-state="fail" />
+          <input type="button" value="Cheese" data-action="campaign.advance" data-state="cheese" />
+          <input type="button" value="Undo" data-action="campaign.undo" />
+          |
+          <input type="button" value="Reset" data-action="campaign.reset" />
+          |
+          <input type="button" value="Save" />
+          <input type="button" value="Load" />
+          |
+          <input type="checkbox" id="campaign-show" value="y" checked="yes" />
+          Show in overlay?
+        </div>
       </div>
     </div>
 
-    <hr>
-    </div>
+
+    <hr/>
 
     <div>
       Missions: <select id="mission-disguise-files"></select>
@@ -55,6 +67,9 @@
         <input type="checkbox" id="always-suit" value="y" checked="yes" />
         Include suit?
         <input type="button" id="disguise-clear" value="Clear" />
+        |
+        <input type="checkbox" id="disguise-show" value="y" checked="yes" />
+        Show in overlay?
       </div>
       <div id="disguises"></div>
     </div>

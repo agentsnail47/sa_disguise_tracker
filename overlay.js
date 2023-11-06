@@ -1,43 +1,15 @@
-class Dock {
+class Overlay {
   constructor() {
-    const p = new URLSearchParams(location.search);
-    this.id = p.get('id');
+    this.id = new URLSearchParams(location.search).get('id');
     this.connect();
-
     this.clearDisguises();
     this.initCampaign();
-
-    this.initEvents();
 
     setInterval(this.connect.bind(this), 5000);
   }
 
   send(data) {
-    this.ws.send(JSON.stringify({ type: 'admin', id: this.id, data: data }));
-  }
-
-  initEvents() {
-    document.getElementById('disguise-rolls').addEventListener('click', e => {
-      const el = e.target;
-      if (el.type === 'button') {
-        this.send({
-          cmd: 'disguise.roll',
-          file: document.getElementById('mission-disguise-files').value,
-          n: parseInt(el.dataset.n),
-          showdown: el.dataset.showdown === '1',
-          always_suit: document.getElementById('always-suit').checked
-        });
-      }
-    });
-
-    document.getElementById('disguise-clear').addEventListener('click', e => {
-      this.send({ cmd: 'disguise.clear' });
-    });
-
-    document.getElementById('disguises')
-      .addEventListener('click', this.disguiseClicked.bind(this));
-
-    document.getElementById('campaign-actions').addEventListener('click', this.campaignAction.bind(this));
+    this.ws.send(JSON.stringify({ type: 'disguises', id: this.id, data: data }));
   }
 
   connect() {
@@ -49,7 +21,7 @@ class Dock {
         _this.send({ 'cmd': 'hi' });
       });
       this.ws.onclose = function(e) {
-        console.log(`ws close:${e}`);
+        console.log(`ws close:${e.reason}`);
         _this.ws = null;
         setTimeout(_this.connect.bind(_this), 1000);
       };
@@ -57,45 +29,47 @@ class Dock {
         console.error(`ws error:${err.message}`);
         _this.ws.close();
       };
-      this.ws.addEventListener('message', this.processIncoming.bind(this))
+      this.ws.addEventListener('message', this.processMessage.bind(this));
     }
   }
 
-  // Disguise-related methods
-  populateMissions(files) {
-    const el = document.getElementById('mission-disguise-files');
-    el.innerHTML = '';
-    files.forEach(e => {
-      el.options.add(new Option(e, e));
-    });
+  processMessage(m) {
+    const data = JSON.parse(m.data);
+    console.log(`ws received:${JSON.stringify(data)}`);
+    switch (data.cmd) {
+    case 'disguise.set':
+      this.setDisguises(data.disguises);
+      break;
+    case 'disguise.state':
+      this.setDisguiseState(data.d, data.yes);
+      break;
+    case 'campaign.advance':
+      this.advanceCampaign(data.state);
+      break;
+    case 'campaign.undo':
+      this.undoCampaign();
+      break;
+    case 'campaign.reset':
+      this.resetCampaign();
+      break;
+    default:
+    };
   }
 
   setDisguises(disguises) {
+    document.getElementById('disguises').innerHTML = '';
     const el = document.getElementById('disguises');
-    el.innerHTML = '';
     disguises.forEach(e => {
-      el.insertAdjacentHTML('beforeend', `<img title="${e.name}" src="${e.image}">`);
+      el.insertAdjacentHTML('beforeend', `<img src="${e.image}">`);
     });
     for (let i = 0; i < 4 - disguises.length; i++) {
       el.insertAdjacentHTML('beforeend', `<div></div>`);
     }
   }
 
-  disguiseClicked(e) {
-    if (e.target.tagName !== 'IMG') {
-      return;
-    }
-    const yes = e.target.classList.contains('yes');
-    this.send({
-      cmd: 'disguise.state',
-      d: e.target.src,
-      yes: !yes
-    });
-  }
-
-  setDisguiseState(d, yes) {
+  setDisguiseState(disguise, yes) {
     const el = Array.from(document.querySelectorAll('#disguises img'))
-          .find(e => e.src === d);
+          .find(e => e.src === disguise);
     if (yes) {
       el.classList.add('yes');
     } else {
@@ -107,8 +81,6 @@ class Dock {
     this.setDisguises([]);
   }
 
-  // ------------------------
-  // Campaign-related methods
   initCampaign() {
     this.missionI = 1; // 1-18
     this.campaignEnded = false;
@@ -204,38 +176,8 @@ class Dock {
     this.currentMission().classList.add('current_mission');
     this.campaignEnded = false;
   }
+}
 
-  // Message processing
-  processIncoming(m) {
-    const data = JSON.parse(m.data);
-    console.log(data);
-    switch (data.cmd) {
-    case 'disguise.mission_files':
-      this.populateMissions(data.files);
-      break;
-    case 'disguise.set':
-      this.setDisguises(data.disguises);
-      break;
-    case 'disguise.state':
-      this.setDisguiseState(data.d, data.yes);
-      break;
-    case 'disguise.clear':
-      this.clearDisguises();
-      break;
-    case 'campaign.advance':
-      this.advanceCampaign(data.state);
-      break;
-    case 'campaign.undo':
-      this.undoCampaign();
-      break;
-    case 'campaign.reset':
-      this.resetCampaign();
-      break;
-    default:
-    };
-  }
-};
-
-window.addEventListener('load', () => {
-  const d = new Dock();
+window.addEventListener('load', () => { 
+  new Overlay();
 });
