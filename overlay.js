@@ -43,6 +43,9 @@ class Overlay {
     case 'disguise.state':
       this.setDisguiseState(data.d, data.yes);
       break;
+    case 'disguise.clear':
+      this.clearDisguises();
+      break;
     case 'campaign.advance':
       this.advanceCampaign(data.state);
       break;
@@ -51,6 +54,14 @@ class Overlay {
       break;
     case 'campaign.reset':
       this.resetCampaign();
+      break;
+    case 'campaign.sync':
+      this.missionI = data.state.missionI;
+      this.campaignEnded = data.state.campaignEnded;
+      Array.from(document.querySelectorAll('.mission')).forEach((e, i) => {
+        e.className = data.state.states[i].class;
+        e.innerText = data.state.states[i].text
+      });
       break;
     default:
     };

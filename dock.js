@@ -120,11 +120,19 @@ class Dock {
     if (e.target.tagName !== 'INPUT' && e.target.type !== 'button') {
       return;
     }
-    this.send({
+    const data = {
       cmd: 'campaign.action',
       action: e.target.dataset.action,
       state: e.target.dataset.state
-    });
+    };
+    if (e.target.dataset.action === 'campaign.sync') {
+      data.state = {
+        missionI: this.missionI,
+        campaignEnded: this.campaignEnded,
+        states: Array.from(document.querySelectorAll('.mission')).map(e => { return { text: e.innerText, class: e.className } })
+      };
+    }
+    this.send(data);
   }
 
   currentMission() {
